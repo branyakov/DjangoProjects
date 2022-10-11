@@ -1,9 +1,11 @@
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import ListView, DetailView, CreateView
 
 from .models import News, Category
-from .forms import NewsForm
+from .forms import NewsForm, UserRegisterForm
 
 
 # Create your views here.
@@ -21,7 +23,7 @@ class HomeNews(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(is_published=True)
+        return News.objects.filter(is_published=True).select_related('category')
 
 
 # def index(request):
@@ -45,7 +47,7 @@ class NewsByCategory(ListView):
         return context
 
     def get_queryset(self):
-        return News.objects.filter(category_id=self.kwargs['category_id'], is_published=True)
+        return News.objects.filter(category_id=self.kwargs['category_id'], is_published=True).select_related('category')
 
 
 # def get_category(request, category_id):
@@ -61,10 +63,8 @@ class NewsByCategory(ListView):
 class ViewNews(DetailView):
     model = News
     context_object_name = 'news_item'
-    #template_name = 'news/news_detail.html'
-    #pk_url_kwarg = 'news_id'
-
-
+    # template_name = 'news/news_detail.html'
+    # pk_url_kwarg = 'news_id'
 
 
 # def view_news(request, news_id):
@@ -78,9 +78,6 @@ class CreateNews(CreateView):
     template_name = 'news/add_news.html'
 
 
-
-
-
 # def add_news(request):
 #     if request.method == 'POST':
 #         form = NewsForm(request.POST)
@@ -92,3 +89,20 @@ class CreateNews(CreateView):
 #     else:
 #         form = NewsForm()
 #     return render(request, 'news/add_news.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Register success')
+            return redirect('login')
+        else:
+            messages.error(request, 'Register error')
+    else:
+        form = UserRegisterForm()
+    return render(request, 'news/register.html', {'form': form})
+
+
+def login(request):
+    return render(request, 'news/login.html')
