@@ -16,7 +16,11 @@
 
             <span class="navbar-text">
                 {% if request.user.is_authenticated %}
-                Welcome, {{ user.username}} | <a href="{% url 'logout' %}">Logout</a>
+                    {% if user.first_name or user.last_name %}
+                        Welcome, {{ user.first_name}} {{ user.last_name }} | <a href="{% url 'logout' %}">Logout</a>
+                    {% else %}
+                        Welcome, {{ user.username}} | <a href="{% url 'logout' %}">Logout</a>
+                    {% endif%}
                 {% else %}
                 <a href="{% url 'register' %}">Register</a> | <a href="{% url 'login' %}">Login</a>
                 {% endif %}

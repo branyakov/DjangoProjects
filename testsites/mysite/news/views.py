@@ -15,6 +15,7 @@ class HomeNews(ListView):
     model = News
     template_name = 'news/home_news_list.html'
     context_object_name = 'news'
+    paginate_by = 2
 
     # extra_context = {'title': 'Main'}
 
