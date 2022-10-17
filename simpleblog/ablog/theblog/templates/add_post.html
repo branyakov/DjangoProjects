@@ -2,6 +2,8 @@
 {% block title %}Create a new blog post{% endblock %}
 {% block content %}
 
+{% if user.is_authenticated %}
+
 <h1>Add post ...</h1>
 <br/><br/>
 
@@ -12,5 +14,6 @@
         <button class="btn btn-secondary">Post</button>
     </form>
 </div>
+{% endif %}
 
 {% endblock %}
