@@ -1,4 +1,4 @@
-#!/Users/Admin/GitHub/DjangoProjects/simpleblog/virt/bin/python3
+#!/Users/Admin/GitHub/DjangoProjects/simpleblog/virt/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys

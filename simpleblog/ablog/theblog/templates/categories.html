@@ -1,28 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    {% if category_posts %}
 
+    <h1>{{ cats }}</h1>
 
-{% if category_posts %}
-<h1>{{ cats }}</h1>
+    <ul>
+        {% for post in category_posts %}
+            <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
+                - {{ post.author.first_name }} {{ post.author.last_name }} -
+                {{ post.author.email }} -
+                {{ post.post_date }}
 
-<ul>
-
-{% for post in category_posts %}
-    <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
-        - {{ post.author.first_name }} {{ post.author.last_name }} -
-        {{ post.author.email }} -
-        {{ post.post_date }}
-
-        {% if user.is_authenticated %}
-        - <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
-        <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
-        {% endif %}
-        <br/>
-        {{ post.body|slice:':200' }}
-    </li>
-{% endfor %}
-
-</ul>
-{% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.id == post.author.id %}
+                        - <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
+                        <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
+                    {% endif %}
+                {% endif %}
+                <br/>
+                {{ post.body|slice:':200' }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 {% endblock %}

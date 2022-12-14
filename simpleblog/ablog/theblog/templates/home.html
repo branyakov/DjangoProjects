@@ -4,21 +4,46 @@
 
 <h1>Post</h1>
 
-<ul>
-{% for post in object_list %}
-    <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
-        - <a href="{% url 'category' post.category%}">{{post.category}}</a>
-        - {{ post.author.first_name }} {{ post.author.last_name }} -
-    {{ post.author.email }} -
-    {{ post.post_date }}
+<!--<ul>-->
+<!--{% for post in object_list %}-->
+<!--    <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>-->
+<!--        - <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a>-->
+<!--        - {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.author.email }} - {{ post.post_date }}-->
 
-        {% if user.is_authenticated %}
-         - <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
-        <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
-        {% endif %}
-        <br/>
-    {{ post.body|slice:':200' }}</li>
-{% endfor %}
+<!--        {% if user.is_authenticated %}-->
+<!--            {% if user.id == post.author.id %}-->
+<!--                 - <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>-->
+<!--                <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>-->
+<!--            {% endif %}-->
+<!--        {% endif %}-->
+<!--        <br/>-->
+<!--        {{ post.snippet }}-->
+<!--&lt;!&ndash;        {{ post.body|slice:':200'|safe }}&ndash;&gt;-->
+<!--    </li>-->
+<!--{% endfor %}-->
+<!--</ul>-->
+
+<ul>
+    {% for post in object_list %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a></h5>
+            <h6 class="card-subtitle mb-10 text-muted">Category: <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a></h6>
+            <br/>
+<!--            <p class="card-text">{{ post.snippet }}</p>-->
+            <p class="card-text">{{ post.body|slice:':200'|safe }}</p>
+            {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.author.email }} - {{ post.post_date }}
+            <br/>
+            {% if user.is_authenticated %}
+                {% if user.id == post.author.id %}
+                    <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
+                    <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+    {% endfor %}
 </ul>
 
 {% endblock %}

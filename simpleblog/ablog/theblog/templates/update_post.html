@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
-{% block title %}Edit blog post{% endblock %}
+
+{% block title %}
+    Edit blog post
+{% endblock %}
+
 {% block content %}
+    {% if user.is_authenticated %}
+        {% if user.id == post.author.id %}
+            <h1>Update post ...</h1>
+            <br/><br/>
 
-{% if user.is_authenticated %}
-<h1>Update post ...</h1>
-<br/><br/>
-
-<div class="form-group">
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p}}
-        <button class="btn btn-secondary">Update</button>
-    </form>
-</div>
-{% endif %}
-
+            <div class="form-group">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.media}}
+                    {{ form.as_p}}
+                    <button class="btn btn-dark">Update</button>
+                </form>
+            </div>
+        {% endif %}
+    {% endif %}
 {% endblock %}
