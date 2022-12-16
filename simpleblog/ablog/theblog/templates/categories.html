@@ -7,20 +7,25 @@
 
     <ul>
         {% for post in category_posts %}
-            <li><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
-                - {{ post.author.first_name }} {{ post.author.last_name }} -
-                {{ post.author.email }} -
+        <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
+                <br/>
                 {{ post.post_date }}
 
+                <br/>
+                {{ post.body|safe|linebreaks|truncatewords:50 }}
+                <br/>
+                {{ post.author.first_name }} {{ post.author.last_name }} -
+                {{ post.author.email }}
+                <br/>
                 {% if user.is_authenticated %}
                     {% if user.id == post.author.id %}
-                        - <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
-                        <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
+                        <small><a class="text-success" href="{% url 'update_post' post.pk%}">(Edit)</a></small>
+                        <small><a class="text-danger" href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
                     {% endif %}
                 {% endif %}
-                <br/>
-                {{ post.body|slice:':200' }}
-            </li>
+
+            <hr>
+
         {% endfor %}
     </ul>
     {% endif %}

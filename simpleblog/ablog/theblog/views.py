@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
 
 from .models import *
@@ -21,7 +21,6 @@ def LikeView(request, pk):
     else:
         post.likes.add(request.user)
         liked = True
-    post.likes.add(request.user)
     return HttpResponseRedirect(reverse('article-detail', args=[str(pk)]))
 
 class HomeView(ListView):
@@ -29,6 +28,7 @@ class HomeView(ListView):
     template_name = 'home.html'
     # ordering = {'-post_date'}
     ordering = {'-id'}
+    paginate_by = 4
 
     def get_context_data(self, *args, **kwargs):
         cat_menu = Category.objects.all()

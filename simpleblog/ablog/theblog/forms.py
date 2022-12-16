@@ -1,5 +1,6 @@
 from django import forms
 from .models import *
+from ckeditor.widgets import CKEditorWidget
 
 # choices = Category.objects.all().values_list('title', 'title')
 #
@@ -13,7 +14,7 @@ choice_list = [item for item in Category.objects.all().values_list('title', 'tit
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'title_tag', 'author', 'category', 'snippet','body', 'header_image')
+        fields = ('title', 'title_tag', 'author', 'category','body', 'header_image')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of your Post ...'}),
@@ -27,7 +28,7 @@ class PostForm(forms.ModelForm):
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'title_tag', 'snippet','body')
+        fields = ('title', 'title_tag','body', 'header_image')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),

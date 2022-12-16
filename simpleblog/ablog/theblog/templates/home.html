@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
-<h1>Post</h1>
+<!--<h1>Post</h1>-->
 
 <!--<ul>-->
 <!--{% for post in object_list %}-->
@@ -23,27 +24,83 @@
 <!--{% endfor %}-->
 <!--</ul>-->
 
-<ul>
-    {% for post in object_list %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title"><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a></h5>
-            <h6 class="card-subtitle mb-10 text-muted">Category: <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a></h6>
+<!--<ul>-->
+<!--    {% for post in object_list %}-->
+<!--    <div class="card">-->
+<!--        <div class="card-body">-->
+<!--            <h5 class="card-title"><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a></h5>-->
+<!--            <br/>-->
+<!--            <h6 class="card-subtitle mb-10 text-muted">Category: <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a></h6>-->
+<!--            <br/>-->
+<!--&lt;!&ndash;            <p class="card-text">{{ post.snippet }}</p>&ndash;&gt;-->
+<!--                <p class="card-text">{{ post.body|safe|linebreaks|truncatewords:50 }}</p>-->
+<!--            {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.author.email }} - {{ post.post_date }}-->
+<!--            <br/>-->
+<!--            {% if user.is_authenticated %}-->
+<!--                {% if user.id == post.author.id %}-->
+<!--                    <small><a class="text-success" href="{% url 'update_post' post.pk%}">(Edit)</a></small>-->
+<!--                    <small><a class="text-danger" href="{% url 'delete_post' post.pk%}">(Delete)</a></small>-->
+<!--                {% endif %}-->
+<!--            {% endif %}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+
+<br/><br/>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-2">
+            <h3 class="text-start">Category</h3>
             <br/>
-<!--            <p class="card-text">{{ post.snippet }}</p>-->
-            <p class="card-text">{{ post.body|slice:':200'|safe }}</p>
-            {{ post.author.first_name }} {{ post.author.last_name }} - {{ post.author.email }} - {{ post.post_date }}
-            <br/>
-            {% if user.is_authenticated %}
-                {% if user.id == post.author.id %}
-                    <small><a href="{% url 'update_post' post.pk%}">(Edit)</a></small>
-                    <small><a href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
-                {% endif %}
+            {% if cat_menu %}
+            {% for item in cat_menu %}
+                 <h5 class="text-start"><a href="{% url 'category' item|slugify %}">{{ item }}</a></h5>
+            {% endfor %}
             {% endif %}
         </div>
+        <div class="col-10">
+<!--            <h1>Post</h1>-->
+            <br/>
+            <ul>
+                {% for post in object_list %}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% if post.header_image %}
+                                <img src="{{ post.header_image.url }}" class="img-fluid rounded-start" alt="...">
+                            {% else %}
+                                <img src="{% static 'theblog/images/blogger-logo.jpg' %}" class="img-fluid rounded-start" alt="...">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="text-start"><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a></h5>
+                                <h6 class="text-start">{{ post.body|safe|linebreaks|truncatewords:50 }}</h6>
+
+                                <br/>
+                                <h6 class="text-start"><small class="text-muted">Category: <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a></small></h6>
+                                <h6 class="text-start"><small class="text-muted">{{ post.author.first_name }} {{ post.author.last_name }}</small></h6>
+                                <h6 class="text-start"><small class="text-muted"> {{ post.author.email }}</small></h6>
+                                <h6 class="text-start"><small class="text-muted">{{ post.post_date }}</small></h6>
+
+
+                                {% if user.is_authenticated %}
+                                    {% if user.id == post.author.id %}
+                                        <small ><a class="text-success" href="{% url 'update_post' post.pk%}">Edit</a></small>
+                                        <small><a class="text-danger" href="{% url 'delete_post' post.pk%}">Delete</a></small>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-    <br/>
-    {% endfor %}
-</ul>
+</div>
+
 
 {% endblock %}
