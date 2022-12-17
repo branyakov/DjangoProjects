@@ -43,6 +43,7 @@ def password_success(request):
 
 
 class UserRegisterView(CreateView):
+    # form_class = UserCreationForm
     form_class = SignUpForm
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
@@ -55,6 +56,7 @@ class UserRegisterView(CreateView):
 
 class UserEditView(UpdateView):
     form_class = EditProfileForm
+
     template_name = 'registration/edit_profile.html'
     success_url = reverse_lazy('home')
 

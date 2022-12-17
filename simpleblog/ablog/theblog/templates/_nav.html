@@ -1,0 +1,110 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'theblog/images/blogger-logo.jpg' %}"
+                                                             alt="Logo" width="70" height="28"
+                                                             class="d-inline-block align-text-top">
+            simple Blog!</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+
+                {% if cat_menu %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Categories
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% for item in cat_menu %}
+                        <li><a class="dropdown-item" href="{% url 'category' item|slugify %}">{{ item }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% else %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{% url 'category-list' %}">Categories</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add_post' %}">Add post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add_category' %}">Add category</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="{% url 'register' %}">Add post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="{% url 'register' %}">Add category</a>
+                </li>
+                {% endif %}
+            </ul>
+
+
+            <!--              <ul class="navbar-nav ml-auto mb-2 mb-lg-0">-->
+            <!--                  {% if user.is_authenticated %}-->
+            <!--                  <a class="nav-link" href="{% url 'edit_profile' %}">Edit Profile</a>-->
+            <!--                  </li>-->
+            <!--                  <li class="nav-item">-->
+            <!--                      <a class="nav-link" href="{% url 'logout' %}">Logout</a>-->
+            <!--                  </li>-->
+            <!--                  {% else %}-->
+            <!--                  <li class="nav-item">-->
+            <!--                      <a class="nav-link" href="{% url 'register' %}">Register</a>-->
+            <!--                  </li>-->
+            <!--                  <li class="nav-item">-->
+            <!--                      <a class="nav-link" href="{% url 'login' %}">Login</a>-->
+            <!--                  </li>-->
+            <!--                  {% endif %}-->
+            <!--                  <ul/>-->
+
+            <span class="navbar-text">
+              {% if request.user.is_authenticated %}
+                  {% if user.first_name or user.last_name %}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'edit_profile' %}">{{ user.first_name}} {{ user.last_name }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                  {% else %}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'edit_profile' %}">{{ user.username}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    </ul>
+                  {% endif%}
+              {% else %}
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                </ul>
+              {% endif %}
+            </span>
+        </div>
+    </div>
+</nav>

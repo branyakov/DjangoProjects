@@ -17,5 +17,10 @@
                 <button class="btn btn-dark">Post</button>
             </form>
         </div>
+
+        <script>
+            var name = "{{ user.id }}";
+            document.getElementById('user').value = name;
+        </script>
     {% endif %}
 {% endblock %}

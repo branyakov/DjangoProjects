@@ -1,32 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    {% if category_posts %}
 
-    <h1>{{ cats }}</h1>
-
-    <ul>
-        {% for post in category_posts %}
-        <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
-                <br/>
-                {{ post.post_date }}
-
-                <br/>
-                {{ post.body|safe|linebreaks|truncatewords:50 }}
-                <br/>
-                {{ post.author.first_name }} {{ post.author.last_name }} -
-                {{ post.author.email }}
-                <br/>
-                {% if user.is_authenticated %}
-                    {% if user.id == post.author.id %}
-                        <small><a class="text-success" href="{% url 'update_post' post.pk%}">(Edit)</a></small>
-                        <small><a class="text-danger" href="{% url 'delete_post' post.pk%}">(Delete)</a></small>
-                    {% endif %}
-                {% endif %}
-
+{% if category_posts %}
+<h1>{{ cats }}</h1>
+<br/><br/>
+{% for post in category_posts %}
+<div class="row">
+    <div class="col-3">
+        {% if post.header_image %}
+        <img src="{{ post.header_image.url }}" class="img-fluid rounded-start" alt="...">
+        {% else %}
+        <img src="{% static 'theblog/images/blogger-logo.jpg' %}" class="img-fluid rounded-start" alt="...">
+        {% endif %}
+    </div>
+    <div class="col-9">
+        <ul>
+            <h3><a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a></h3>
+            {{ post.post_date }}
+            <br/>
+            {{ post.body|safe|linebreaks|truncatewords:50 }}
+            <br/><br/>
+            {% if post.author.first_name and post.author.last_name and post.author.email %}
+            Author: {{ post.author.first_name }} {{ post.author.last_name }}
+            <br/>
+            Email: {{ post.author.email }}
+            {% else %}
+            By: Anonymous
+            {% endif %}            <br/>
+            Category: <a href="{% url 'category' post.category|slugify %}">{{post.category}}</a>
+            <br/>
+            {% if user.is_authenticated %}
+            {% if user.id == post.author.id %}
+            <small><a class="text-success" href="{% url 'update_post' post.pk%}">Edit</a></small>
+            <small><a class="text-danger" href="{% url 'delete_post' post.pk%}">Delete</a></small>
+            {% endif %}
+            {% endif %}
+            <br/>
             <hr>
+        </ul>
+    </div>
+<div/>
+{% endfor %}
+{% endif %}
 
-        {% endfor %}
-    </ul>
-    {% endif %}
 {% endblock %}
+

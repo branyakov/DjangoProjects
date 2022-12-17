@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Blog Categories</h1>
-
+    <h1>Choose Category</h1>
+    <br/><br/>
     {% for item in cat_menu_list %}
-        <h4><a class="dropdown-item" href="#">{{ item }}</a></h4>
+        <h4><a class="dropdown-item" href="{% url 'category' item|slugify %}">{{ item }}</a></h4>
     {% endfor %}
 
 
