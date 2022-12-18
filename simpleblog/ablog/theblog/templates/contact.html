@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    About/Contact
+{% endblock %}
+
+{% block content %}
+        <h1>About/Contact</h1>
+        <br/><br/>
+        This is very simple Blog. If you want to contact with me, please send me a message. Thank you.
+        <br/><br/>
+        <div class="form-group">
+            <form method="POST" >
+                {% csrf_token %}
+                {{ form.as_p}}
+                <button class="btn btn-dark">Send massage</button>
+            </form>
+        </div>
+{% endblock %}

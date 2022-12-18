@@ -54,6 +54,18 @@ class CommentForm(forms.ModelForm):
         fields = ('name', 'body')
 
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'value': '', 'id': 'user', 'type': 'hidden'}),
             'body': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ('name', 'email', 'massage' )
+        email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'massage': forms.Textarea(attrs={'class': 'form-control'}),
         }

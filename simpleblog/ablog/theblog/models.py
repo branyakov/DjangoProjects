@@ -17,7 +17,7 @@ class Category(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    bio = models.TextField()
+    bio = RichTextField()
     profile_pic = models.ImageField(null=True, blank=True, upload_to='images/profile/')
     website_url = models.CharField(max_length=255, null=True, blank=True)
     facebook_url = models.CharField(max_length=255, null=True, blank=True)
@@ -27,6 +27,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return str(self.user)
+
+    def get_absolute_url(self):
+        return reverse('home')
 
 
 class Post(models.Model):
@@ -61,3 +64,12 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s' % (self.post.title, self.name)
 
+class Contact(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=100)
+    massage = models.TextField()
+
+    def __str__(self):
+        return self.name
+    def get_absolute_url(self):
+        return reverse('home')

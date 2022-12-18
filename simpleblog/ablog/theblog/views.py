@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView, DeleteView
 
 from .models import *
-from .forms import PostForm, EditPostForm, AddCategoryForm, CommentForm
+from .forms import PostForm, EditPostForm, AddCategoryForm, CommentForm, ContactForm
 from django.http import HttpResponseRedirect
 
 
@@ -114,3 +114,14 @@ class AddCategoryView(CreateView):
         context = super(AddCategoryView, self).get_context_data(*args, **kwargs)
         context['cat_menu'] = cat_menu
         return context
+
+class ContactView(CreateView):
+    model = Contact
+    form_class = ContactForm
+    template_name = 'contact.html'
+    def get_context_data(self, *args, **kwargs):
+        cat_menu = Category.objects.all()
+        context = super(ContactView, self).get_context_data(*args, **kwargs)
+        context['cat_menu'] = cat_menu
+        return context
+
