@@ -23,6 +23,7 @@ def LikeView(request, pk):
         liked = True
     return HttpResponseRedirect(reverse('article-detail', args=[str(pk)]))
 
+
 class HomeView(ListView):
     model = Post
     template_name = 'home.html'
@@ -36,13 +37,16 @@ class HomeView(ListView):
         context['cat_menu'] = cat_menu
         return context
 
+
 def CategoryListView(request):
     cat_menu_list = Category.objects.all()
     return render(request, 'category_list.html', {'cat_menu_list': cat_menu_list})
 
+
 def CategoryView(request, cats):
     category_posts = Post.objects.filter(category=cats.replace('-', ' '))
-    return render(request, 'categories.html', {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts},)
+    return render(request, 'categories.html',
+                  {'cats': cats.title().replace('-', ' '), 'category_posts': category_posts}, )
 
 
 class ArticleDetailView(DetailView):
@@ -70,6 +74,7 @@ class AddPostView(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'add_post.html'
+
     # fields = '__all__'
     def get_context_data(self, *args, **kwargs):
         cat_menu = Category.objects.all()
@@ -82,6 +87,7 @@ class AddCommentView(CreateView):
     model = Comment
     form_class = CommentForm
     template_name = 'add_comment.html'
+
     # fields = '__all__'
     def form_valid(self, form):
         form.instance.post_id = self.kwargs['pk']
@@ -107,6 +113,7 @@ class AddCategoryView(CreateView):
     model = Category
     form_class = AddCategoryForm
     template_name = 'add_category.html'
+
     # fields = '__all__'
 
     def get_context_data(self, *args, **kwargs):
@@ -115,13 +122,14 @@ class AddCategoryView(CreateView):
         context['cat_menu'] = cat_menu
         return context
 
+
 class ContactView(CreateView):
     model = Contact
     form_class = ContactForm
     template_name = 'contact.html'
+
     def get_context_data(self, *args, **kwargs):
         cat_menu = Category.objects.all()
         context = super(ContactView, self).get_context_data(*args, **kwargs)
         context['cat_menu'] = cat_menu
         return context
-

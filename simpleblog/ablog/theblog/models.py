@@ -5,6 +5,7 @@ from django.urls import reverse
 from datetime import datetime, date
 from ckeditor.fields import RichTextField
 
+
 class Category(models.Model):
     title = models.CharField(max_length=255)
 
@@ -65,6 +66,7 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s' % (self.post.title, self.name)
 
+
 class Contact(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=100)
@@ -72,5 +74,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
     def get_absolute_url(self):
         return reverse('home')

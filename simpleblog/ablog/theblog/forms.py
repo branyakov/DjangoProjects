@@ -14,7 +14,7 @@ choice_list = [item for item in Category.objects.all().values_list('title', 'tit
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'title_tag', 'author', 'category','body', 'header_image')
+        fields = ('title', 'title_tag', 'author', 'category', 'body', 'header_image')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name of your Post ...'}),
@@ -26,10 +26,11 @@ class PostForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Add your post ...'}),
         }
 
+
 class EditPostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'title_tag','body', 'header_image')
+        fields = ('title', 'title_tag', 'body', 'header_image')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -38,10 +39,11 @@ class EditPostForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
+
 class AddCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('title', )
+        fields = ('title',)
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -58,10 +60,11 @@ class CommentForm(forms.ModelForm):
             'body': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
+
 class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
-        fields = ('name', 'email', 'massage' )
+        fields = ('name', 'email', 'massage')
         email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
 
         widgets = {
